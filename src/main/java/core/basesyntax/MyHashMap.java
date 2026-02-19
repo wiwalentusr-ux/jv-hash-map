@@ -15,7 +15,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         capacity = DEFAULT_CAPACITY;
         loadFactor = DEFAULT_LOAD_FACTOR;
         nodeArray = (Node<K,V>[]) new Node[capacity];
-        threshold = (int) (DEFAULT_CAPACITY * DEFAULT_LOAD_FACTOR);
+        threshold = (int) (capacity * loadFactor);
     }
 
     public MyHashMap(int capacity) {
@@ -26,6 +26,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
         }
         this.capacity = currentCapacity;
         nodeArray = (Node<K,V>[]) new Node[this.capacity];
+        threshold = (int) (this.capacity * loadFactor);
     }
     
     @Override
@@ -59,7 +60,7 @@ public class MyHashMap<K, V> implements MyMap<K, V> {
     }
 
     private int getPosition(int hash) {
-        return Math.abs(hash) % capacity;
+        return (hash & 0x7FFFFFFF) % capacity;
     }
 
     private Node<K,V> getNode(K key, int hash) {
